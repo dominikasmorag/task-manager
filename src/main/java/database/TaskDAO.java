@@ -1,30 +1,34 @@
 package database;
 
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import task.Task;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 public class TaskDAO implements DAO<Task>{
-//String title, String description, LocalDateTime dueDate, Category category, PriorityLevel priorityLevel
-    private static final String INSERT_QUERY = "INSERT INTO tasks (title, description, dueDate, category, priorityLevel) VALUES (?, ?)";
-    List<Task> taskList = new ArrayList<>();
+    private final Connection connection;
+    private final CategoryDAO categoryDAO;
+    private static final String INSERT_QUERY = "INSERT INTO tasks (title, description, dueDate, category, priorityLevel) VALUES (?, ?, ?, ?, ?)";
 
-    public TaskDAO() {
-        taskList = getAllRecords();
+    public TaskDAO(Connection connection) {
+        this.connection = connection;
+        this.categoryDAO = new CategoryDAO(connection);
     }
     @Override
     public Optional<Task> get(int id) {
         return null;
     }
 
-    public void insert(Task task) {
+    public void insert(Task task) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(INSERT_QUERY);
+        statement.setString(1, task.getTitle());
+        statement.setString(2, task.getDescription());
+        statement.setTimestamp(3, Timestamp.valueOf(task.getDueDate()));
+        statement.setInt(4, categoryDAO.findIdByName(task.getCategory().getName()));
+        statement.setString(5, task.getPriorityLevel().name());
     }
 
-    private List<Task> getAllRecords() {
-        return new ArrayList<Task>();
-        }
-    }
+}
