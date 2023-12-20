@@ -7,20 +7,10 @@ import database.DataBase;
 
 import database.TaskDAO;
 import org.h2.jdbcx.JdbcDataSource;
-import task.Category;
-import task.PriorityLevel;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 
 public class Main {
@@ -35,24 +25,18 @@ public class Main {
         try {
             connection = dataSource.getConnection();
             System.out.println(connection.isClosed());
-
             DataBase.createSchema(connection);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        CategoryDAO categoryDAO = new CategoryDAO(connection);
+        TaskDAO taskDAO = new TaskDAO(connection);
 
-        CreateTaskCommand command = new CreateTaskCommand(new TaskDAO());
+        CreateTaskCommand command = new CreateTaskCommand(taskDAO, categoryDAO);
         command.execute();
 
-        Category category = new Category("praca");
-        try {
-            CategoryDAO categoryDAO = new CategoryDAO(connection);
-            categoryDAO.insert(category);
-            int a = categoryDAO.getIdByName("praca");
-            System.out.println("int a: " + a);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
+        Map<String, Integer> map = categoryDAO.updateMap();
+        System.out.println("Entry set: " + map.entrySet());
     }
+
 }
