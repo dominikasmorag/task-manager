@@ -13,6 +13,6 @@ public class Controller {
     private HashMap<String, Command> commands;
 
     public Controller(Connection connection) {
-        System.out.println();
+
     }
 }
