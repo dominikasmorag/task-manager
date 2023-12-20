@@ -4,24 +4,23 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Category extends Entity {
-    private String categoryName;
+    private String name;
     public static List<String> categories;
-
 
     public Category() {
     }
 
-    public Category(String categoryName) {
+    public Category(String name) {
         super(LocalDateTime.now());
-        this.categoryName = categoryName;
+        this.name = name;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getName() {
+        return name;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setName(String categoryName) {
+        this.name = categoryName;
     }
 
     public static List<String> getCategories() {
@@ -35,7 +34,7 @@ public class Category extends Entity {
     @Override
     public String toString() {
         return "Category{" +
-                "categoryName='" + categoryName + '\'' +
+                "categoryName='" + name + '\'' +
                 '}';
     }
 }
