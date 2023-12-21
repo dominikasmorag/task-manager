@@ -13,7 +13,8 @@ public class DataBase {
             "dueDate date NOT NULL, " +
             "status ENUM('PENDING', 'COMPLETED'), " +
             "categoryId INT," +
-            "priorityLeve ENUM('LOW', 'MEDIUM', 'HIGH'), " +
+            "priorityLevel ENUM('LOW', 'MEDIUM', 'HIGH'), " +
+            "creationDate date NOT NULL, " +
             "FOREIGN KEY (categoryId) REFERENCES categories(id));";
 
     private static final String CATEGORIES_TABLE_NAME = "categories";
