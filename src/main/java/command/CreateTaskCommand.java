@@ -5,6 +5,7 @@ import database.TaskDAO;
 import task.PriorityLevel;
 import task.Task;
 
+import java.sql.SQLException;
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -48,5 +49,10 @@ public class CreateTaskCommand implements Command {
         PriorityLevel priorityLevel = PriorityLevel.valueOf(sc.next().trim().toUpperCase());
         Task task = new Task(title, description, dueDate, categoryDAO.findByName(categoryName), priorityLevel);
         System.out.println("TASKKK: " + task);
+        try {
+            taskDAO.insert(task);
+        } catch(SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }
