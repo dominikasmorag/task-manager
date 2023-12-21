@@ -7,6 +7,7 @@ import database.DataBase;
 
 import database.TaskDAO;
 import org.h2.jdbcx.JdbcDataSource;
+import org.h2.mvstore.MVStoreException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -26,7 +27,7 @@ public class Main {
             connection = dataSource.getConnection();
             System.out.println(connection.isClosed());
             DataBase.createSchema(connection);
-        } catch (SQLException e) {
+        } catch (SQLException | MVStoreException e) {
             throw new RuntimeException(e);
         }
         CategoryDAO categoryDAO = new CategoryDAO(connection);
