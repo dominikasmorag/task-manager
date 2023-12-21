@@ -1,7 +1,6 @@
 package task;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 public class Task extends Entity {
@@ -71,12 +70,14 @@ public class Task extends Entity {
     @Override
     public String toString() {
         return "Task{" +
-                "title='" + title + '\'' +
+                "id=" + this.getId() +'\'' +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", dueDate=" + dueDate +
                 ", category=" + category +
                 ", priorityLevel=" + priorityLevel +
                 ", status=" + status +
+                ", creationDate='"+ getCreationDate() +
                 '}';
     }
 }
