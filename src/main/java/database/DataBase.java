@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DataBase {
-    private static final String TASKS_TABLE_NAME = "tasks";
+    public static final String TASKS_TABLE_NAME = "tasks";
     private static final String TASKS_TABLE_CREATION = "create table if not exists " + TASKS_TABLE_NAME +
             " (id INT AUTO_INCREMENT PRIMARY KEY NOT NULL," +
             "title VARCHAR(100) NOT NULL," +
