@@ -1,17 +1,22 @@
 package task;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Entity {
 
     private int id;
-    private LocalDateTime creationDate;
+    private Timestamp creationDate;
 
     public Entity(){}
 
-    public Entity(LocalDateTime creationDate) {
+    public Entity(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
+    public Entity(int id, Timestamp creationDate) {
+        this.id = id;
+        this.creationDate = creationDate;
+    }
+
 
     public int getId() {
         return id;
@@ -21,11 +26,11 @@ public class Entity {
         this.id = id;
     }
 
-    public LocalDateTime getCreationDate() {
+    public Timestamp getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate(Timestamp creationDate) {
         this.creationDate = creationDate;
     }
 }
