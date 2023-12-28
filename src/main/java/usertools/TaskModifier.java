@@ -1,14 +1,15 @@
 package usertools;
 
 import task.Status;
-import task.Task;
+import task.TaskEntity;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class TaskModifier {
 
-    public static void completeTask(Task task, boolean isCompleted) {
+    public static void completeTask(TaskEntity task, boolean isCompleted) {
         if(isCompleted) {
             task.setStatus(Status.COMPLETED);
         }
@@ -17,15 +18,15 @@ public class TaskModifier {
         }
     }
 
-    public static void changeTitle(Task task, String title) {
+    public static void changeTitle(TaskEntity task, String title) {
         task.setTitle(title);
     }
 
-    public static void changeDescription(Task task, String description) {
+    public static void changeDescription(TaskEntity task, String description) {
         task.setDescription(description);
     }
 
-    public static void changeDueDate(Task task, LocalDateTime dueDate) {
+    public static void changeDueDate(TaskEntity task, Timestamp dueDate) {
         task.setDueDate(dueDate);
     }
 
