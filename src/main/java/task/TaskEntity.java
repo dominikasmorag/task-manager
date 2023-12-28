@@ -1,20 +1,21 @@
 package task;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Task extends Entity {
-    public static List<Task> tasks;
+public class TaskEntity extends Entity {
+    public static List<TaskEntity> tasks;
     private String title;
     private String description;
-    private LocalDateTime dueDate;
-    private Category category;
+    private Timestamp dueDate;
+    private CategoryEntity category;
 
     private PriorityLevel priorityLevel;
     private Status status;
 
-    public Task(String title, String description, LocalDateTime dueDate, Category category, PriorityLevel priorityLevel) {
-        super(LocalDateTime.now());
+    public TaskEntity(String title, String description, Timestamp dueDate, CategoryEntity category, PriorityLevel priorityLevel) {
+        super(Timestamp.valueOf(LocalDateTime.now()));
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -23,6 +24,15 @@ public class Task extends Entity {
         this.status = Status.PENDING;
     }
 
+    public TaskEntity(int id, String title, String description, Timestamp dueDate, Status status, CategoryEntity category, PriorityLevel priorityLevel, Timestamp creationDate) {
+        super(id, creationDate);
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.dueDate = dueDate;
+        this.category = category;
+        this.priorityLevel = priorityLevel;
+    }
     public String getTitle() {
         return title;
     }
@@ -39,19 +49,19 @@ public class Task extends Entity {
         this.description = description;
     }
 
-    public LocalDateTime getDueDate() {
+    public Timestamp getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDateTime dueDate) {
+    public void setDueDate(Timestamp dueDate) {
         this.dueDate = dueDate;
     }
 
-    public Category getCategory() {
+    public CategoryEntity getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryEntity category) {
         this.category = category;
     }
 
@@ -69,7 +79,7 @@ public class Task extends Entity {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "TaskEntity{" +
                 "id=" + this.getId() +'\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
