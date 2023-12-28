@@ -1,17 +1,25 @@
 package task;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Category extends Entity {
+public class CategoryEntity extends Entity {
     private String name;
     public static List<String> categories;
 
-    public Category() {
+    public CategoryEntity() {
     }
 
-    public Category(String name) {
-        super(LocalDateTime.now());
+    public CategoryEntity(String name) {
+        super(Timestamp.valueOf(LocalDateTime.now()));
+        this.name = name;
+    }
+
+
+    public CategoryEntity(int id, String name, Timestamp creationDate) {
+        super(id, creationDate);
         this.name = name;
     }
 
@@ -28,12 +36,12 @@ public class Category extends Entity {
     }
 
     public static void setCategories(List<String> categories) {
-        Category.categories = categories;
+        CategoryEntity.categories = categories;
     }
 
     @Override
     public String toString() {
-        return "Category{" +
+        return "CategoryEntity{" +
                 "categoryName='" + name + '\'' +
                 '}';
     }
