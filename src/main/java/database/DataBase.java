@@ -10,11 +10,11 @@ public class DataBase {
             " (id INT AUTO_INCREMENT PRIMARY KEY NOT NULL," +
             "title VARCHAR(100) NOT NULL," +
             "description VARCHAR(300) NOT NULL," +
-            "dueDate date NOT NULL, " +
+            "dueDate TIMESTAMP NOT NULL, " +
             "status ENUM('PENDING', 'COMPLETED'), " +
             "categoryId INT," +
             "priorityLevel ENUM('LOW', 'MEDIUM', 'HIGH'), " +
-            "creationDate date NOT NULL, " +
+            "creationDate TIMESTAMP NOT NULL, " +
             "FOREIGN KEY (categoryId) REFERENCES categories(id));";
 
     private static final String CATEGORIES_TABLE_NAME = "categories";
