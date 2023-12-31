@@ -5,9 +5,7 @@ import task.CategoryEntity;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 public class CategoryDAO implements DAO<CategoryEntity> {
@@ -24,6 +22,25 @@ public class CategoryDAO implements DAO<CategoryEntity> {
     @Override
     public Optional<CategoryEntity> get(int id) {
         return Optional.empty();
+    }
+
+    public List<CategoryEntity> findAll() {
+        List<CategoryEntity> list = new ArrayList<>();
+        try {
+            String query = "SELECT id, name, creationDate FROM categories";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet rs = preparedStatement.executeQuery();
+            while(rs.next()) {
+                list.add(new CategoryEntity(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getTimestamp(3)
+                ));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return list;
     }
 
     @Override
