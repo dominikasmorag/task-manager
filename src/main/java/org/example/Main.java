@@ -1,22 +1,16 @@
 package org.example;
 
-import command.CreateTaskCommand;
-import database.CategoryDAO;
 import database.DataBase;
 
-
-import database.TaskDAO;
 import org.h2.jdbcx.JdbcDataSource;
 import org.h2.mvstore.MVStoreException;
+import usertools.TaskModifier;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.*;
-
 
 public class Main {
     public static void main(String[] args) {
-
 
         Connection connection;
         JdbcDataSource dataSource = new JdbcDataSource();
@@ -30,14 +24,9 @@ public class Main {
         } catch (SQLException | MVStoreException e) {
             throw new RuntimeException(e);
         }
-        CategoryDAO categoryDAO = new CategoryDAO(connection);
-        TaskDAO taskDAO = new TaskDAO(connection);
 
-        CreateTaskCommand command = new CreateTaskCommand(taskDAO, categoryDAO);
-        command.execute();
-
-        Map<String, Integer> map = categoryDAO.updateMap();
-        System.out.println("Entry set: " + map.entrySet());
+        TaskModifier taskModifier = new TaskModifier(connection);
+        taskModifier.createTask();
     }
 
 }
