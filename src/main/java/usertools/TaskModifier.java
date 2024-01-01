@@ -64,8 +64,10 @@ public class TaskModifier {
             dueDate = new Timestamp(Integer.parseInt(date[0])-1900, Integer.parseInt(date[1])-1, Integer.parseInt(date[2]), Integer.parseInt(time[0]), Integer.parseInt(time[1]), 0, 0);
         } catch (DateTimeException | NumberFormatException | ArrayIndexOutOfBoundsException ex) {
             System.err.println("Invalid value. it needs to be in yyyy.MM.dd hh:mm format.\nDue date is set to 2100.01.01 00:00 now");
-            createDueDate(sc);
+            sc.nextLine();
+            return new Timestamp(2100, 1, 1, 0, 0, 0, 0);
         }
+        sc.nextLine();
         return dueDate;
     }
 
@@ -76,10 +78,13 @@ public class TaskModifier {
             names.add(cat.getName().toUpperCase());
         }
         System.out.println("Available categories: " + names);
-        System.out.println("Category: ");
+        System.out.print("Category: ");
         String category = sc.nextLine();
-        if(availableCategories.contains(category.toUpperCase())) {
-            return categoryDAO.findByName(category);
+        if(names.contains(category.toUpperCase())) {
+            System.out.println("CATEGORY IN names.contains: " + category);
+            CategoryEntity categoryEntity = categoryDAO.findByName(category.toUpperCase()).get();
+            System.out.println("CategoeryEntty = " + categoryEntity.toString());
+            return categoryEntity;
         }
         else {
             CategoryEntity anotherEntity = new CategoryEntity(category);
@@ -92,11 +97,12 @@ public class TaskModifier {
     private PriorityLevel assignPriorityLevel(Scanner sc) {
         PriorityLevel pl = PriorityLevel.MEDIUM;
         System.out.println("Priority level [LOW, MEDIUM, HIGH]: ");
+        String priority = sc.next().toUpperCase();
         try {
-            pl = PriorityLevel.valueOf(sc.next());
+            pl = PriorityLevel.valueOf(priority);
         } catch (Exception ex) {
-            System.err.println("There is no such priority level, try again.");
-            assignCategoryEntity(sc);
+            System.err.println("There is no such priority level. It's set to MEDIUM now.");
+
         }
         return pl;
     }
