@@ -1,6 +1,5 @@
 package database;
 
-import org.h2.jdbc.JdbcSQLNonTransientException;
 import task.CategoryEntity;
 
 import java.sql.*;
@@ -58,7 +57,8 @@ public class CategoryDAO implements DAO<CategoryEntity> {
     }
 
     public int findIdByName(String name) throws SQLException {
-        String query = "SELECT id FROM categories WHERE UPPER(name) LIKE UPPER(?)";
+        String query = "SELECT id FROM categories WHERE UPPER(name) = ?";
+        name = name.toUpperCase();
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, name);
         ResultSet rs = statement.executeQuery();
@@ -86,25 +86,21 @@ public class CategoryDAO implements DAO<CategoryEntity> {
         return categoryEntity;
     }
 
-    public CategoryEntity findByName(String name) {
+    public Optional<CategoryEntity> findByName(String name) {
         CategoryEntity category = new CategoryEntity();
-        String query = "SELECT name FROM categories WHERE name = ?";
+        String query = "SELECT id, name, creationDate FROM categories WHERE UPPER(name) LIKE UPPER(?)";
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, name);
             ResultSet rs = statement.executeQuery();
-            try {
-                rs.next();
-                category = new CategoryEntity(rs.getString(1));
-            } catch (JdbcSQLNonTransientException ex) {
-                System.err.println("this category didn't exist but it is created now.");
-                category = new CategoryEntity(name);
-                insert(category);
-            }
+            rs.next();
+            category.setId(rs.getInt(1));
+            category.setName(rs.getString(2));
+            category.setCreationDate(rs.getTimestamp(3));
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-        return category;
+        return Optional.ofNullable(category);
     }
 
      public Map<String, Integer> updateMap() {
