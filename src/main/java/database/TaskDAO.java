@@ -71,6 +71,27 @@ public class TaskDAO implements DAO<TaskEntity>{
         return  list;
     }
 
+    public List<TaskEntity> findAllWithStatus(Status status) throws SQLException {
+        List<TaskEntity> list = new ArrayList<>();
+        String query = "SELECT id, title, description, dueDate, status, categoryId, priorityLevel, creationDate FROM tasks WHERE status = ?";
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, status.name());
+        ResultSet rs = statement.executeQuery();
+        while(rs.next()) {
+            list.add(new TaskEntity(
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    rs.getTimestamp(4),
+                    Status.valueOf(rs.getString(5)),
+                    categoryDAO.findById(rs.getInt(6)),
+                    PriorityLevel.valueOf(rs.getString(7)),
+                    rs.getTimestamp(8)
+            ));
+        }
+        return list;
+    }
+
 
     public void insert(TaskEntity task) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(INSERT_QUERY);
