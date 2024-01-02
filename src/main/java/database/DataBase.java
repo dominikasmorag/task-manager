@@ -17,7 +17,7 @@ public class DataBase {
             "creationDate TIMESTAMP NOT NULL, " +
             "FOREIGN KEY (categoryId) REFERENCES categories(id));";
 
-    private static final String CATEGORIES_TABLE_NAME = "categories";
+    public static final String CATEGORIES_TABLE_NAME = "categories";
     private static final String CATEGORIES_TABLE_CREATION = "create table if not exists " + CATEGORIES_TABLE_NAME +
             " (id INT AUTO_INCREMENT PRIMARY KEY NOT NULL," +
             "name VARCHAR(100) unique," +
