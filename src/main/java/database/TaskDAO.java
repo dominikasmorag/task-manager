@@ -48,6 +48,18 @@ public class TaskDAO implements DAO<TaskEntity>{
         return Optional.ofNullable(taskEntity);
     }
 
+    public void updateStatus(TaskEntity task) {
+        String query = "UPDATE " + DataBase.TASKS_TABLE_NAME + " SET status = 'COMPLETED' WHERE id = ?;";
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, task.getId());
+            statement.executeUpdate();
+            System.out.println("TASK UPDATED ");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+    }
     public List<TaskEntity> findAll() {
         ArrayList<TaskEntity> list = new ArrayList<>();
         String query = "SELECT id, title, description, dueDate, status, categoryId, priorityLevel, creationDate FROM " + DataBase.TASKS_TABLE_NAME + ";";
@@ -71,7 +83,7 @@ public class TaskDAO implements DAO<TaskEntity>{
         return  list;
     }
 
-    public List<TaskEntity> findAllWithStatus(Status status) throws SQLException {
+    public List<TaskEntity> findAllWithField(Status status) throws SQLException {
         List<TaskEntity> list = new ArrayList<>();
         String query = "SELECT id, title, description, dueDate, status, categoryId, priorityLevel, creationDate FROM tasks WHERE status = ?";
         PreparedStatement statement = connection.prepareStatement(query);
@@ -92,6 +104,32 @@ public class TaskDAO implements DAO<TaskEntity>{
         return list;
     }
 
+    public List<TaskEntity> findAllWithField(PriorityLevel priorityLevel) {
+        String priorityLevelName = priorityLevel.name().toUpperCase();
+        List<TaskEntity> list = new ArrayList<>();
+        try {
+            String query = "SELECT id, title, description, dueDate, status, categoryId, priorityLevel, creationDate FROM tasks WHERE UPPER(priorityLevel) = UPPER(?);";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, priorityLevelName);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                list.add(new TaskEntity(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getTimestamp(4),
+                        Status.valueOf(rs.getString(5)),
+                        categoryDAO.findById(rs.getInt(6)),
+                        PriorityLevel.valueOf(rs.getString(7)),
+                        rs.getTimestamp(8)
+                ));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+
+        }
+        return list;
+    }
 
     public void insert(TaskEntity task) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(INSERT_QUERY);
