@@ -2,10 +2,8 @@ package task;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class TaskEntity extends Entity {
-    public static List<TaskEntity> tasks;
     private String title;
     private String description;
     private Timestamp dueDate;
