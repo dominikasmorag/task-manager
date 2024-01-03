@@ -27,7 +27,7 @@ public class TaskCreator extends TaskModifier {
         TaskEntity task = new TaskEntity(title, description, dueDate, category, priorityLevel);
         System.out.println("TASK: " + task);
         try {
-            taskDAO.insert(task);
+            taskDAO.save(task);
         } catch(SQLException ex) {
             ex.printStackTrace();
         }
@@ -79,7 +79,7 @@ public class TaskCreator extends TaskModifier {
         }
         else {
             CategoryEntity anotherEntity = new CategoryEntity(category);
-            categoryDAO.insert(anotherEntity);
+            categoryDAO.save(anotherEntity);
             System.out.println("New category " + category + " created");
             return anotherEntity;
         }
