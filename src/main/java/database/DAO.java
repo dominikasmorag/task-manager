@@ -5,8 +5,8 @@ import java.util.Optional;
 
 public interface DAO<T> {
 
-    Optional<T> get(int id);
+    void save(T t) throws SQLException;
 
-    void insert(T t) throws SQLException;
+    Optional<T> findById(int id);
 
 }
