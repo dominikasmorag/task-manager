@@ -12,6 +12,8 @@ public class TaskEntity extends Entity {
     private PriorityLevel priorityLevel;
     private Status status;
 
+    public TaskEntity() {
+    }
     public TaskEntity(String title, String description, Timestamp dueDate, CategoryEntity category, PriorityLevel priorityLevel) {
         super(Timestamp.valueOf(LocalDateTime.now()));
         this.title = title;
