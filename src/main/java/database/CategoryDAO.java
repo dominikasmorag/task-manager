@@ -19,8 +19,23 @@ public class CategoryDAO implements DAO<CategoryEntity> {
 
     }
     @Override
-    public Optional<CategoryEntity> get(int id) {
-        return Optional.empty();
+    public Optional<CategoryEntity> findById(int id) {
+        CategoryEntity categoryEntity = new CategoryEntity();
+        try {
+            String query = "SELECT id, name, creationDate FROM categories WHERE id = ?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            rs.next();
+            categoryEntity = new CategoryEntity(
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getTimestamp(3)
+            );
+        } catch (SQLException ex) {
+            System.err.println("SQLException at CategoryEntity findById(int id)");
+        }
+        return Optional.ofNullable(categoryEntity);
     }
 
     public List<CategoryEntity> findAll() {
@@ -43,7 +58,7 @@ public class CategoryDAO implements DAO<CategoryEntity> {
     }
 
     @Override
-    public void insert(CategoryEntity category){
+    public void save(CategoryEntity category){
         try {
             category.setCreationDate(Timestamp.valueOf(LocalDateTime.now()));
             insertPrepStatement = connection.prepareStatement(INSERT_QUERY);
@@ -65,25 +80,6 @@ public class CategoryDAO implements DAO<CategoryEntity> {
         rs.next();
         int id = rs.getInt(1);
         return id;
-    }
-
-    public CategoryEntity findById(int id) {
-        CategoryEntity categoryEntity = new CategoryEntity();
-        try {
-            String query = "SELECT id, name, creationDate FROM categories WHERE id = ?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
-            rs.next();
-            categoryEntity = new CategoryEntity(
-                    rs.getInt(1),
-                    rs.getString(2),
-                    rs.getTimestamp(3)
-            );
-        } catch (SQLException ex) {
-            System.err.println("SQLException at CategoryEntity findById(int id)");
-        }
-        return categoryEntity;
     }
 
     public Optional<CategoryEntity> findByName(String name) {
