@@ -5,10 +5,12 @@ import database.DataBase;
 import database.TaskDAO;
 import org.h2.jdbcx.JdbcDataSource;
 import org.h2.mvstore.MVStoreException;
+import task.TaskWithCategory;
 import usertools.Controller;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -25,11 +27,13 @@ public class Main {
         } catch (SQLException | MVStoreException e) {
             throw new RuntimeException(e);
         }
-
         TaskDAO taskDAO = new TaskDAO(connection);
+        List<TaskWithCategory> list = taskDAO.findAllByCategory("university");
+        for(TaskWithCategory task : list) {
+            System.out.println(task);
+        }
         Controller controller = new Controller(connection);
         controller.showPanel();
 
     }
-
 }
