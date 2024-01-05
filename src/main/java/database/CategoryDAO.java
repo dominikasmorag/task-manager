@@ -113,4 +113,13 @@ public class CategoryDAO implements DAO<CategoryEntity> {
         }
         return map;
     }
+
+    @Override
+    public String toString() {
+        return "CategoryDAO{" +
+                "categoriesMap=" + categoriesMap +
+                ", connection=" + connection +
+                ", insertPrepStatement=" + insertPrepStatement +
+                '}';
+    }
 }
