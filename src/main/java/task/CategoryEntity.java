@@ -41,7 +41,9 @@ public class CategoryEntity extends Entity {
     @Override
     public String toString() {
         return "CategoryEntity{" +
+                "id=" + this.getId() + '\'' +
                 "categoryName='" + name + '\'' +
+                ", creationDate=" + this.getCreationDate() +
                 '}';
     }
 }
