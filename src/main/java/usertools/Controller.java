@@ -25,6 +25,7 @@ public class Controller {
         System.out.println("4 - show all tasks with LOW priority level");
         System.out.println("5 - show all tasks with MEDIUM priority level");
         System.out.println("6 - show all tasks with HIGH priority level");
+        System.out.println("7 - generate report");
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
         switch(input) {
@@ -52,11 +53,12 @@ public class Controller {
                     System.out.println(highTask);
                 }
                 break;
-
+            case "7" :
             default:
                 System.out.println("wrong number");
                 showPanel();
         }
+
         showPanel();
     }
 
