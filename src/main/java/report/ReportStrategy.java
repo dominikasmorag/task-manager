@@ -1,10 +1,11 @@
 package report;
 
-import task.TaskWithCategory;
+import task.TaskEntity;
 
 import java.util.List;
 
+@FunctionalInterface
 public interface ReportStrategy {
 
-    void generateReport(List<TaskWithCategory> list);
+    void generate(List<TaskEntity> list);
 }
