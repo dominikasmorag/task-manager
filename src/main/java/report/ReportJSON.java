@@ -1,45 +1,44 @@
 package report;
 
-import database.CategoryDAO;
 import org.json.simple.JSONObject;
 import task.TaskEntity;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.*;
 
-public class ReportJSON {
-    private String filePath;
-    private final Connection connection;
+public class ReportJSON implements ReportStrategy {
+    private final String filePath;
 
-    public ReportJSON(String filePath, Connection connection)
+    public ReportJSON(String filePath)
     {
         this.filePath = filePath + "\\tasks-report.json";
-        this.connection = connection;
     }
 
     public void generate(List<TaskEntity> tasks) {
-        CategoryDAO categoryDAO = new CategoryDAO(connection);
         List<JSONObject> objects = new ArrayList<>();
         long start = Calendar.getInstance().getTimeInMillis();
         for(TaskEntity t : tasks) {
-            Map<String, Object> obj = new LinkedHashMap<>();
-            Map<String, Object> categoryMap = new LinkedHashMap<>();
-            obj.put("id", t.getId());
-            obj.put("title", t.getTitle());
-            obj.put("description", t.getDescription());
-            obj.put("dueDate", t.getDueDate().toString());
-            obj.put("status", t.getStatus().toString());
-//            JSONObject categoryObj = new JSONObject();
-//            categoryObj.put("id", t.getCategory().getId());
-//            categoryObj.put("name", t.getCategory().getName());
-//            categoryObj.put("creationDate", String.valueOf(t.getCategory().getCreationDate()));
-            //obj.put("Category", );
-            obj.put("priorityLevel", String.valueOf(t.getPriorityLevel().toString()));
-            obj.put("creationDate", t.getCreationDate().toString());
-            objects.add(new JSONObject(obj));
-            System.out.println(obj);
+            Map<String, Object> categoryMap = new TreeMap<>();
+            categoryMap.put("id", t.getCategory().getId());
+            categoryMap.put("name", t.getCategory().getName());
+            categoryMap.put("creationDate", String.valueOf(t.getCategory().getCreationDate()));
+
+            Map<String, Object> taskMap = new TreeMap<>();
+            taskMap.put("category", categoryMap);
+            taskMap.put("id", t.getId());
+            taskMap.put("title", t.getTitle());
+            taskMap.put("description", t.getDescription());
+            taskMap.put("dueDate", t.getDueDate().toString());
+            taskMap.put("status", t.getStatus().toString());
+            taskMap.put("priorityLevel", String.valueOf(t.getPriorityLevel().toString()));
+            taskMap.put("creationDate", t.getCreationDate().toString());
+
+            JSONObject taskBody = new JSONObject();
+            taskBody.put("task", taskMap);
+
+
+            objects.add(new JSONObject(taskBody));
         }
         long end = Calendar.getInstance().getTimeInMillis();
         long time = end - start;
