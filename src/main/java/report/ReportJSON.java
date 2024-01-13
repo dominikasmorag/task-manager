@@ -17,7 +17,11 @@ public class ReportJSON implements ReportStrategy {
 
     public void generate(List<TaskEntity> tasks) {
         List<JSONObject> objects = new ArrayList<>();
-        long start = Calendar.getInstance().getTimeInMillis();
+        createMaps(tasks, objects);
+        saveFile(objects);
+    }
+
+    private void createMaps(List<TaskEntity> tasks, List<JSONObject> jsonObjects) {
         for(TaskEntity t : tasks) {
             Map<String, Object> categoryMap = new TreeMap<>();
             categoryMap.put("id", t.getCategory().getId());
@@ -37,19 +41,17 @@ public class ReportJSON implements ReportStrategy {
             JSONObject taskBody = new JSONObject();
             taskBody.put("task", taskMap);
 
-
-            objects.add(new JSONObject(taskBody));
+            jsonObjects.add(new JSONObject(taskBody));
         }
-        long end = Calendar.getInstance().getTimeInMillis();
-        long time = end - start;
-        System.out.println("TIME FOR LINKEDLIST " + time);
+    }
+
+    private void saveFile(List<JSONObject> jsonObjects) {
         try (FileWriter file = new FileWriter(filePath)) {
-            for(JSONObject jsonObj : objects) {
+            for(JSONObject jsonObj : jsonObjects) {
                 file.write(jsonObj.toJSONString() + "\n");
             }
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
 }
